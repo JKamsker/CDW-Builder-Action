@@ -23,14 +23,14 @@ using Microsoft.Extensions.Logging;
 
 using static CommandLine.Parser;
 
-var supposedInput = new[] { ".github/workflows/build.yml", "2021-12-17/Plan copy.yml", "2021-12-17/Plan.yml" };
-var ser = JsonSerializer.Serialize(supposedInput);
-var nObj = new
-{
-    commandLineArgs = ser
-};
+//var supposedInput = new[] { ".github/workflows/build.yml", "2021-12-17/Plan copy.yml", "2021-12-17/Plan.yml" };
+//var ser = JsonSerializer.Serialize(supposedInput);
+//var nObj = new
+//{
+//    commandLineArgs = ser
+//};
 
-var nSer = JsonSerializer.Serialize(nObj);
+//var nSer = JsonSerializer.Serialize(nObj);
 
 using IHost host = Host.CreateDefaultBuilder(args)
     .ConfigureServices((_, services) => { })//services.AddLogging()
@@ -64,9 +64,19 @@ static async Task StartAnalysisAsync(ActionInputs inputs, IHost host)
 
     var logger = Get<ILoggerFactory>(host).CreateLogger(nameof(StartAnalysisAsync));
     logger.LogInformation("Hey, im actually running, LOL!");
-    logger.LogInformation(inputs.ChangedFilesJson);
-    var des = JsonSerializer.Deserialize<string[]>(inputs.ChangedFilesJson);
-    Debugger.Break();
+    logger.LogInformation($"Changes from console: {inputs.ChangedFilesJson}");
+    try
+    {
+        var des = JsonSerializer.Deserialize<string[]>(inputs.ChangedFilesJson);
+        foreach (var item in des)
+        {
+            logger.LogInformation($"Got change: {item}");
+        }
+    }
+    catch (Exception ex)
+    {
+        logger.LogError(ex, "Failed deserializing");
+    }
 
     //foreach (var item in inputs.ChangedFiles ?? Enumerable.Empty<string>())
     //{
