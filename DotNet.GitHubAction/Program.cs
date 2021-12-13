@@ -29,6 +29,10 @@ static TService Get<TService>(IHost host)
     where TService : notnull =>
     host.Services.GetRequiredService<TService>();
 
+Get<ILoggerFactory>(host)
+       .CreateLogger("DotNet.GitHubAction.Program")
+       .LogInformation($"Args: '{string.Join("', '", args)}'");
+
 static async Task StartAnalysisAsync(ActionInputs inputs, IHost host)
 {
     //using ProjectWorkspace workspace = Get<ProjectWorkspace>(host);
