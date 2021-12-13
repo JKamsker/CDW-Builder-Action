@@ -45,12 +45,12 @@ var logger = Get<ILoggerFactory>(host)
 
 logger.LogInformation($"Args: '{string.Join("', '", args)}'");
 
-var exists = File.Exists("changes.json");
-logger.LogInformation($"File exists: {exists}");
-if (exists)
-{
-    Console.WriteLine($"Changes: '{File.ReadAllText("changes.json")}'");
-}
+//var exists = File.Exists("changes.json");
+//logger.LogInformation($"File exists: {exists}");
+//if (exists)
+//{
+//    Console.WriteLine($"Changes: '{File.ReadAllText("changes.json")}'");
+//}
 
 static async Task StartAnalysisAsync(ActionInputs inputs, IHost host)
 {
