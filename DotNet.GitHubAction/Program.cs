@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -21,6 +23,15 @@ using Microsoft.Extensions.Logging;
 
 using static CommandLine.Parser;
 
+var supposedInput = new[] { ".github/workflows/build.yml", "2021-12-17/Plan copy.yml", "2021-12-17/Plan.yml" };
+var ser = JsonSerializer.Serialize(supposedInput);
+var nObj = new
+{
+    commandLineArgs = ser
+};
+
+var nSer = JsonSerializer.Serialize(nObj);
+
 using IHost host = Host.CreateDefaultBuilder(args)
     .ConfigureServices((_, services) => { })//services.AddLogging()
     .Build();
@@ -29,9 +40,17 @@ static TService Get<TService>(IHost host)
     where TService : notnull =>
     host.Services.GetRequiredService<TService>();
 
-Get<ILoggerFactory>(host)
-       .CreateLogger("DotNet.GitHubAction.Program")
-       .LogInformation($"Args: '{string.Join("', '", args)}'");
+var logger = Get<ILoggerFactory>(host)
+       .CreateLogger("DotNet.GitHubAction.Program");
+
+logger.LogInformation($"Args: '{string.Join("', '", args)}'");
+
+var exists = File.Exists("changes.json");
+logger.LogInformation($"File exists: {exists}");
+if (exists)
+{
+    Console.WriteLine($"Changes: '{File.ReadAllText("changes.json")}'");
+}
 
 static async Task StartAnalysisAsync(ActionInputs inputs, IHost host)
 {
@@ -45,10 +64,14 @@ static async Task StartAnalysisAsync(ActionInputs inputs, IHost host)
 
     var logger = Get<ILoggerFactory>(host).CreateLogger(nameof(StartAnalysisAsync));
     logger.LogInformation("Hey, im actually running, LOL!");
-    foreach (var item in inputs.ChangedFiles ?? Enumerable.Empty<string>())
-    {
-        logger.LogInformation($"Something with file: {item}");
-    }
+    logger.LogInformation(inputs.ChangedFilesJson);
+    var des = JsonSerializer.Deserialize<string[]>(inputs.ChangedFilesJson);
+    Debugger.Break();
+
+    //foreach (var item in inputs.ChangedFiles ?? Enumerable.Empty<string>())
+    //{
+    //    logger.LogInformation($"Something with file: {item}");
+    //}
 
     //var projectAnalyzer = Get<ProjectMetricDataAnalyzer>(host);
 

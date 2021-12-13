@@ -20,7 +20,7 @@ namespace DotNet.GitHubAction
         [Option('f', "files",
             Required = true,
             HelpText = "Changed Files")]
-        public string[] ChangedFiles { get; set; } = null!;
+        public string ChangedFilesJson { get; set; } = null!;
 
         //[Option('n', "name",
         //    Required = true,
