@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 
-using DotNet.GitHubAction.Models.Database;
-using DotNet.GitHubAction.Models.Git;
+using CDW_Builder_Action.Models.Database;
+using CDW_Builder_Action.Models.Git;
 
 using System;
 using System.Collections.Generic;
@@ -10,14 +10,14 @@ using System.Text;
 using System.Threading.Tasks;
 using Rnd.Mapping.Automapper;
 
-namespace DotNet.GitHubAction.Models.Mapping
+namespace CDW_Builder_Action.Models.Mapping
 {
     public class WorkshopEventProfile : Profile
     {
         public WorkshopEventProfile()
         {
-            base.CreateMap<WorkshopEventDto, WorkshopEvent>()
-                .SimpleMap(x => x, x => x);
+            CreateMap<WorkshopEventDto, WorkshopEvent>();
+            CreateMap<WorkshopDto, Workshop>();
         }
     }
 }

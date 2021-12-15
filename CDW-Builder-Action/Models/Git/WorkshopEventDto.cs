@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DotNet.GitHubAction.Models.Git
+namespace CDW_Builder_Action.Models.Git
 {
     public class WorkshopEventDto
     {

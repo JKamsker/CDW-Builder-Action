@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DotNet.GitHubAction.Models.Database
+namespace CDW_Builder_Action.Models.Database
 {
     public class WorkshopEvent
     {
@@ -22,6 +22,9 @@ namespace DotNet.GitHubAction.Models.Database
 
         [BsonElement("location")]
         public string Location { get; set; } = "CoderDojo Online";
+
+        [BsonElement("workshops")]
+        public List<Workshop> Workshops { get; set; }
     }
 
     public partial class Workshop

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DotNet.GitHubAction.Models.Configuration
+namespace CDW_Builder_Action.Models.Configuration
 {
     public class GitConfiguration
     {

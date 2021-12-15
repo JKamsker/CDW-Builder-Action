@@ -1,8 +1,8 @@
 ﻿//using DotNet.CodeAnalysis;
-//using DotNet.GitHubAction.Analyzers;
+//using CDW_Builder_Action.Analyzers;
 //using Microsoft.Extensions.DependencyInjection;
 
-//namespace DotNet.GitHubAction.Extensions
+//namespace CDW_Builder_Action.Extensions
 //{
 //    static class ServiceCollectionExtensions
 //    {

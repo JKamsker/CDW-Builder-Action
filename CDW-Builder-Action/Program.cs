@@ -13,11 +13,11 @@ using CommandLine;
 
 //using DotNet.CodeAnalysis;
 //using Microsoft.CodeAnalysis.CodeMetrics;
-using DotNet.GitHubAction;
-using DotNet.GitHubAction.Models;
+using CDW_Builder_Action;
+using CDW_Builder_Action.Models;
 
-//using DotNet.GitHubAction.Analyzers;
-//using DotNet.GitHubAction.Extensions;
+//using CDW_Builder_Action.Analyzers;
+//using CDW_Builder_Action.Extensions;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileSystemGlobbing;
 using Microsoft.Extensions.Hosting;
@@ -29,12 +29,12 @@ using YamlDotNet.Serialization.NamingConventions;
 using Microsoft.Extensions.Configuration;
 
 using static CommandLine.Parser;
-using DotNet.GitHubAction.Extensions;
+using CDW_Builder_Action.Extensions;
 
 // This seems to work in ps
-// .\DotNet.GitHubAction.exe -f '[\".github/workflows/build.yml\",\"2021-12-17/Plan copy.yml\",\"2021-12-17/Plan.yml\"]'
+// .\CDW_Builder_Action.exe -f '[\".github/workflows/build.yml\",\"2021-12-17/Plan copy.yml\",\"2021-12-17/Plan.yml\"]'
 // Cmd
-// DotNet.GitHubAction.exe -f "[\".github/workflows/build.yml\",\"2021-12-17/Plan copy.yml\",\"2021-12-17/Plan.yml\"]"
+// CDW_Builder_Action.exe -f "[\".github/workflows/build.yml\",\"2021-12-17/Plan copy.yml\",\"2021-12-17/Plan.yml\"]"
 public class Program
 {
     public static async Task Main(string[] args)

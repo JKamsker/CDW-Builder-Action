@@ -2,11 +2,11 @@
 
 using CommandLine;
 
-using DotNet.GitHubAction;
-using DotNet.GitHubAction.Dal;
-using DotNet.GitHubAction.Models.Configuration;
-using DotNet.GitHubAction.Models.Database;
-using DotNet.GitHubAction.Models.Git;
+using CDW_Builder_Action;
+using CDW_Builder_Action.Dal;
+using CDW_Builder_Action.Models.Configuration;
+using CDW_Builder_Action.Models.Database;
+using CDW_Builder_Action.Models.Git;
 
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -19,6 +19,7 @@ using System.Linq;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
+using System.IO;
 
 public class CommandRunner : IHostedService
 {
@@ -59,11 +60,11 @@ public class CommandRunner : IHostedService
 
     private async Task StartAnalysisAsync(ActionInputs inputs)
     {
-        var events = GetEvents(inputs);
+        var events = ParseEvents(inputs);
         foreach (var @event in events)
         {
             var dbEvent = await _eventDao.FindByDateAsync(@event.EventDate);
-            if (dbEvent != null)
+            if (dbEvent == null)
             {
                 dbEvent = _mapper.Map<WorkshopEvent>(@event);
                 await _eventDao.InsertAsync(dbEvent);
@@ -76,14 +77,13 @@ public class CommandRunner : IHostedService
                 await _eventDao.UpdateAsync(dbEvent);
             }
         }
-        Debugger.Break();
     }
 
     public async Task StopAsync(CancellationToken cancellationToken)
     {
     }
 
-    private List<WorkshopEventDto> GetEvents(ActionInputs inputs)
+    private List<WorkshopEventDto> ParseEvents(ActionInputs inputs)
     {
         List<WorkshopEventDto> workshopEvents = new();
         List<DateTimeOffset> workshopDates = new();
@@ -97,7 +97,7 @@ public class CommandRunner : IHostedService
             {
                 _logger.LogInformation($"Got change: {item}");
 
-                var file = new CdwYamlFile(item);
+                var file = new CdwYamlFile(Path.Combine(_options.Value.BasePath, item));
                 if (!file.IsExtensionValid || file.EventDate == null)
                 {
                     _logger.LogInformation($"Skipping invalid file");

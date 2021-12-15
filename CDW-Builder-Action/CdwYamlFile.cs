@@ -1,4 +1,4 @@
-﻿using DotNet.GitHubAction.Models.Git;
+﻿using CDW_Builder_Action.Models.Git;
 
 using System;
 using System.Collections.Generic;
@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.NamingConventions;
 
-namespace DotNet.GitHubAction
+namespace CDW_Builder_Action
 {
     public class CdwYamlFile
     {

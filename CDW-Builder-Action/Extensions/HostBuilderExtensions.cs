@@ -9,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DotNet.GitHubAction.Extensions
+namespace CDW_Builder_Action.Extensions
 {
     /// <summary>
     /// Extensions to emulate a typical "Startup.cs" pattern for <see cref="IHostBuilder"/>

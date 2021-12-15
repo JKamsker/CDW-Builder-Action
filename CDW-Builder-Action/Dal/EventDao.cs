@@ -1,4 +1,4 @@
-﻿using DotNet.GitHubAction.Models.Database;
+﻿using CDW_Builder_Action.Models.Database;
 
 using MongoDB.Driver;
 
@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using Rnd.MongoDb;
 using System.Threading.Tasks;
 
-namespace DotNet.GitHubAction.Dal
+namespace CDW_Builder_Action.Dal
 {
     public class EventDao : DaoBase<WorkshopEvent>
     {

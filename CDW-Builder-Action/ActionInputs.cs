@@ -1,7 +1,7 @@
 ﻿using System;
 using CommandLine;
 
-namespace DotNet.GitHubAction
+namespace CDW_Builder_Action
 {
     public class ActionInputs
     {

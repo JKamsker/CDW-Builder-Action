@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DotNet.GitHubAction.Dal
+namespace CDW_Builder_Action.Dal
 {
 
     public class DaoBase<TDocument>

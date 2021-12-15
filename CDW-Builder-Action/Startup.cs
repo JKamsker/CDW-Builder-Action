@@ -1,7 +1,7 @@
-﻿using DotNet.GitHubAction.Dal;
-using DotNet.GitHubAction.Models.Configuration;
-using DotNet.GitHubAction.Models.Database;
-using DotNet.GitHubAction.Models.Mapping;
+﻿using CDW_Builder_Action.Dal;
+using CDW_Builder_Action.Models.Configuration;
+using CDW_Builder_Action.Models.Database;
+using CDW_Builder_Action.Models.Mapping;
 
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -40,6 +40,11 @@ public class Startup
         var mongoClient = CreateMongoClient();
         var db = mongoClient.GetDatabase(databaseName);
         var events = db.GetCollection<WorkshopEvent>("events");
+
+       
+
+        var coll = events.Find(x => true).ToList();
+
 
         services
             .AddSingleton(db)

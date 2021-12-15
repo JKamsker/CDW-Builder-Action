@@ -5,8 +5,8 @@ on:
   push:
     branches: [ main ]
     paths:
-    - 'github-actions/DotNet.GitHubAction/**'               # run on all changes to this dir
-    - '!github-actions/DotNet.GitHubAction/CODE_METRICS.md' # ignore this file
+    - 'github-actions/CDW-Builder-Action/**'               # run on all changes to this dir
+    - '!github-actions/CDW-Builder-Action/CODE_METRICS.md' # ignore this file
   workflow_dispatch:
     inputs:
       reason:
@@ -29,14 +29,14 @@ jobs:
 
     - name: .NET code metrics
       id: dotnet-code-metrics
-      uses: dotnet/samples/github-actions/DotNet.GitHubAction@main
+      uses: dotnet/samples/github-actions/CDW-Builder-Action@main
       env:
         GREETINGS: 'Hello, .NET developers!' # ${{ secrets.GITHUB_TOKEN }}
       with:
         owner: ${{ github.repository_owner }}
         name: ${{ github.repository }}
         branch: ${{ github.ref }}
-        dir: ${{ './github-actions/DotNet.GitHubAction' }}
+        dir: ${{ './github-actions/CDW-Builder-Action' }}
       
     - name: Create pull request
       uses: peter-evans/create-pull-request@v3.4.1

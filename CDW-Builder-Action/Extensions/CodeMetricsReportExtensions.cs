@@ -9,7 +9,7 @@
 //using Microsoft.CodeAnalysis;
 //using Microsoft.CodeAnalysis.CodeMetrics;
 
-//namespace DotNet.GitHubAction.Extensions
+//namespace CDW_Builder_Action.Extensions
 //{
 //    static class CodeMetricsReportExtensions
 //    {
