@@ -1,33 +1,43 @@
-﻿using CommandLine;
+﻿using AutoMapper;
+
+using CommandLine;
 
 using DotNet.GitHubAction;
 using DotNet.GitHubAction.Dal;
+using DotNet.GitHubAction.Models.Configuration;
+using DotNet.GitHubAction.Models.Database;
 using DotNet.GitHubAction.Models.Git;
 
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 
-
-
 public class CommandRunner : IHostedService
 {
     private readonly ILogger<CommandRunner> _logger;
+    private readonly IOptions<GitConfiguration> _options;
+    private readonly IMapper _mapper;
     private readonly EventDao _eventDao;
 
     public CommandRunner
     (
+        EventDao eventDao,
         ILogger<CommandRunner> logger,
-        EventDao eventDao
+        IOptions<GitConfiguration> options,
+        IMapper mapper
     )
     {
         _logger = logger;
+        _options = options;
+        _mapper = mapper;
         _eventDao = eventDao;
         //Environment.GetCommandLineArgs();
     }
@@ -52,8 +62,21 @@ public class CommandRunner : IHostedService
         var events = GetEvents(inputs);
         foreach (var @event in events)
         {
-            var dbEvent = _eventDao.FindByDateAsync(@event.EventDate);
+            var dbEvent = await _eventDao.FindByDateAsync(@event.EventDate);
+            if (dbEvent != null)
+            {
+                dbEvent = _mapper.Map<WorkshopEvent>(@event);
+                await _eventDao.InsertAsync(dbEvent);
+            }
+            else
+            {
+                dbEvent = _mapper.Map(@event, dbEvent)
+                    ?? throw new Exception("This is impossible to reach lol");
+
+                await _eventDao.UpdateAsync(dbEvent);
+            }
         }
+        Debugger.Break();
     }
 
     public async Task StopAsync(CancellationToken cancellationToken)

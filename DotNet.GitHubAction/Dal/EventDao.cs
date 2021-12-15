@@ -3,7 +3,11 @@
 using MongoDB.Driver;
 
 using System;
+using System.Linq;
 using System.Collections.Generic;
+
+using Rnd.MongoDb;
+using System.Threading.Tasks;
 
 namespace DotNet.GitHubAction.Dal
 {
@@ -13,9 +17,22 @@ namespace DotNet.GitHubAction.Dal
         {
         }
 
-        internal IAsyncEnumerable<WorkshopEvent> FindByDateAsync(DateTimeOffset eventDate)
+        internal async Task<WorkshopEvent?> FindByDateAsync(DateTimeOffset eventDate)
         {
-            throw new NotImplementedException();
+            return await Collection
+                 .FindAsync(x => x.EventDate == eventDate)
+                 .EnumerateAsync()
+                 .FirstOrDefaultAsync();
+        }
+
+        internal async Task InsertAsync(WorkshopEvent dbEvent)
+        {
+            await Collection.InsertOneAsync(dbEvent);
+        }
+
+        internal async Task UpdateAsync(WorkshopEvent dbEvent)
+        {
+            await Collection.ReplaceOneAsync(x => x.Id == dbEvent.Id, dbEvent);
         }
     }
 }

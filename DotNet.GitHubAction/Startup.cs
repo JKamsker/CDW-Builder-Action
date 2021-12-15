@@ -1,4 +1,7 @@
-﻿using DotNet.GitHubAction.Models.Database;
+﻿using DotNet.GitHubAction.Dal;
+using DotNet.GitHubAction.Models.Configuration;
+using DotNet.GitHubAction.Models.Database;
+using DotNet.GitHubAction.Models.Mapping;
 
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -20,8 +23,17 @@ public class Startup
 
     public void ConfigureServices(IServiceCollection services)
     {
-        services.AddHostedService<CommandRunner>();
+        services.AddSingleton<EventDao>();
 
+        services.AddHostedService<CommandRunner>();
+        services.Configure<GitConfiguration>(Configuration.GetSection("Git"));
+        services.AddAutoMapper(typeof(WorkshopEventProfile));
+
+        ConfigureMongoDb(services);
+    }
+
+    private void ConfigureMongoDb(IServiceCollection services)
+    {
         var databaseName = Configuration["Database:Name"]?.ToString();
         //Console.WriteLine($"Database Name: {databaseName}");
 
