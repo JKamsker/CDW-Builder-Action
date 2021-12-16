@@ -20,12 +20,15 @@ using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using System.IO;
+using CDW_Builder_Action.Helpers;
+using CDW_Builder_Action.Models;
 
 public class CommandRunner : IHostedService
 {
     private readonly ILogger<CommandRunner> _logger;
     private readonly IOptions<GitConfiguration> _options;
     private readonly IMapper _mapper;
+    private readonly ZoomClient _zoomClient;
     private readonly EventDao _eventDao;
 
     public CommandRunner
@@ -33,20 +36,25 @@ public class CommandRunner : IHostedService
         EventDao eventDao,
         ILogger<CommandRunner> logger,
         IOptions<GitConfiguration> options,
-        IMapper mapper
+        IMapper mapper,
+        ZoomClient zoomClient
     )
     {
         _logger = logger;
         _options = options;
         _mapper = mapper;
+        _zoomClient = zoomClient;
         _eventDao = eventDao;
         //Environment.GetCommandLineArgs();
     }
 
     public async Task StartAsync(CancellationToken cancellationToken)
     {
+        //var users = await _zoomClient.EnumerateUsersAsync().FirstAsync();
+        //var meetings = await _zoomClient.EnumerateMeetingsAsync(users).ToListAsync();
+
         var args = Environment.GetCommandLineArgs();
-        var parser = CommandLine.Parser.Default.ParseArguments<ActionInputs>(() => new(), args);
+        var parser = Parser.Default.ParseArguments<ActionInputs>(() => new(), args);
         parser.WithNotParsed(
             errors =>
             {
@@ -61,26 +69,38 @@ public class CommandRunner : IHostedService
     private async Task StartAnalysisAsync(ActionInputs inputs)
     {
         var events = ParseEvents(inputs);
-        foreach (var @event in events)
+        foreach (var eventDto in events)
         {
-            var dbEvent = await _eventDao.FindByDateAsync(@event.EventDate);
+            //var states = eventDto.Workshops.Select(x => x.Status).ToList();
+            if (eventDto.EventDate < DateTimeOffset.UtcNow)
+            {
+                _logger.LogWarning($"Event on {eventDto.EventDate} skipped: Date is in the past");
+                continue;
+            }
+
+            var dbEvent = await _eventDao.FindByDateAsync(eventDto.EventDate);
             if (dbEvent == null)
             {
-                dbEvent = _mapper.Map<WorkshopEvent>(@event);
+                dbEvent = _mapper.Map<WorkshopEvent>(eventDto);
                 await _eventDao.InsertAsync(dbEvent);
             }
             else
             {
-                dbEvent = _mapper.Map(@event, dbEvent)
-                    ?? throw new Exception("This is impossible to reach lol");
-
+                dbEvent = _mapper.Map(eventDto, dbEvent);
                 await _eventDao.UpdateAsync(dbEvent);
             }
-        }
-    }
 
-    public async Task StopAsync(CancellationToken cancellationToken)
-    {
+            foreach (var workshop in dbEvent.Workshops.Where(x => x.Status == WorkshopStatus.Scheduled))
+            {
+                if (workshop.CreateZoom)
+                {
+                    var zoomJoinDetails = workshop.JoinDetails.OfType<ZoomJoinDetails>().FirstOrDefault();
+                    if (zoomJoinDetails == null)
+                    {
+                    }
+                }
+            }
+        }
     }
 
     private List<WorkshopEventDto> ParseEvents(ActionInputs inputs)
@@ -157,5 +177,9 @@ public class CommandRunner : IHostedService
 
             return result;
         }
+    }
+
+    public async Task StopAsync(CancellationToken cancellationToken)
+    {
     }
 }

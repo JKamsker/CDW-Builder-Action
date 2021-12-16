@@ -17,12 +17,13 @@ namespace CDW_Builder_Action.Models.Git
     {
         public string Begintime { get; set; } = string.Empty;
         public string Endtime { get; set; } = string.Empty;
-        public string Status { get; set; } = string.Empty;
+        public WorkshopStatus Status { get; set; } = WorkshopStatus.Unknown;
         public string Title { get; set; } = string.Empty;
         public string TargetAudience { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
         public string Prerequisites { get; set; } = string.Empty;
         public List<string> Mentors { get; set; } = new();
         public string ShortCode { get; set; } = string.Empty;
+        public bool CreateZoom { get; set; } = true;
     }
 }

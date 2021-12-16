@@ -24,7 +24,7 @@ namespace CDW_Builder_Action.Models.Database
         public string Location { get; set; } = "CoderDojo Online";
 
         [BsonElement("workshops")]
-        public List<Workshop> Workshops { get; set; }
+        public List<Workshop> Workshops { get; set; } = new();
     }
 
     public partial class Workshop
@@ -34,6 +34,9 @@ namespace CDW_Builder_Action.Models.Database
 
         [BsonElement("endtime")]
         public string Endtime { get; set; }
+
+        [BsonElement("status")]
+        public WorkshopStatus Status { get; set; }
 
         [BsonElement("title")]
         public string Title { get; set; }
@@ -50,14 +53,11 @@ namespace CDW_Builder_Action.Models.Database
         [BsonElement("mentors")]
         public List<string> Mentors { get; set; }
 
-        [BsonElement("zoomUser")]
-        public string ZoomUser { get; set; }
-
-        [BsonElement("zoom")]
-        public Uri Zoom { get; set; }
-
         [BsonElement("shortCode")]
         public string ShortCode { get; set; }
+
+        [BsonElement("createZoom")]
+        public bool CreateZoom { get; set; }
 
         [BsonElement("callbackMessageSequenceNumber")]
         public long CallbackMessageSequenceNumber { get; set; }
@@ -68,8 +68,37 @@ namespace CDW_Builder_Action.Models.Database
         [BsonElement("discordMessage")]
         public DiscordMessage DiscordMessage { get; set; }
 
-        [BsonElement("zoomShort")]
-        public ZoomShort ZoomShort { get; set; }
+        //[BsonElement("zoomUser")]
+        //public string ZoomUser { get; set; }
+
+        //[BsonElement("zoom")]
+        //public string Zoom { get; set; }
+
+        //[BsonElement("zoomShort")]
+        //public ZoomShort ZoomShort { get; set; }
+
+        public List<IWorkshopJoinDetails> JoinDetails { get; set; } = new();
+    }
+
+    public interface IWorkshopJoinDetails
+    {
+        public string Url { get; }
+    }
+
+    public class ZoomJoinDetails : IWorkshopJoinDetails
+    {
+        public string ExternalId { get; set; }
+        public string Url { get; set; }
+        public string User { get; set; }
+    }
+
+    public class ShortJoinDetails : IWorkshopJoinDetails
+    {
+        [BsonElement("externalId")]
+        public string ExternalId { get; set; }
+
+        [BsonElement("url")]
+        public string Url { get; set; }
     }
 
     public partial class DiscordMessage
@@ -84,18 +113,18 @@ namespace CDW_Builder_Action.Models.Database
         public double MessageId { get; set; }
     }
 
-    public partial class ZoomShort
-    {
-        [BsonElement("_id")]
-        public string Id { get; set; }
+    //public partial class ZoomShort
+    //{
+    //    [BsonElement("_id")]
+    //    public string Id { get; set; }
 
-        [BsonElement("Url")]
-        public string Url { get; set; }
+    //    [BsonElement("Url")]
+    //    public string Url { get; set; }
 
-        [BsonElement("AccessKey")]
-        public string AccessKey { get; set; }
+    //    [BsonElement("AccessKey")]
+    //    public string AccessKey { get; set; }
 
-        [BsonElement("ShortLink")]
-        public Uri ShortLink { get; set; }
-    }
+    //    [BsonElement("ShortLink")]
+    //    public string ShortLink { get; set; }
+    //}
 }

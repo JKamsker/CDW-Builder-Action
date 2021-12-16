@@ -35,6 +35,7 @@ using CDW_Builder_Action.Extensions;
 // .\CDW_Builder_Action.exe -f '[\".github/workflows/build.yml\",\"2021-12-17/Plan copy.yml\",\"2021-12-17/Plan.yml\"]'
 // Cmd
 // CDW_Builder_Action.exe -f "[\".github/workflows/build.yml\",\"2021-12-17/Plan copy.yml\",\"2021-12-17/Plan.yml\"]"
+// CDW_Builder_Action.exe -f "[\"2022-01-15/Plan.yml\"]"
 public class Program
 {
     public static async Task Main(string[] args)

@@ -1,4 +1,5 @@
 ﻿using CDW_Builder_Action.Dal;
+using CDW_Builder_Action.Helpers;
 using CDW_Builder_Action.Models.Configuration;
 using CDW_Builder_Action.Models.Database;
 using CDW_Builder_Action.Models.Mapping;
@@ -28,23 +29,21 @@ public class Startup
         services.AddHostedService<CommandRunner>();
         services.Configure<GitConfiguration>(Configuration.GetSection("Git"));
         services.AddAutoMapper(typeof(WorkshopEventProfile));
+        services.AddZoomClient(Configuration["Zoom:Token"]);
 
         ConfigureMongoDb(services);
     }
 
     private void ConfigureMongoDb(IServiceCollection services)
     {
+        BsonClassMap.RegisterClassMap<ZoomJoinDetails>();
+        BsonClassMap.RegisterClassMap<ShortJoinDetails>();
+
         var databaseName = Configuration["Database:Name"]?.ToString();
-        //Console.WriteLine($"Database Name: {databaseName}");
 
         var mongoClient = CreateMongoClient();
         var db = mongoClient.GetDatabase(databaseName);
         var events = db.GetCollection<WorkshopEvent>("events");
-
-       
-
-        var coll = events.Find(x => true).ToList();
-
 
         services
             .AddSingleton(db)

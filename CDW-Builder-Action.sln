@@ -3,11 +3,12 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CDW-Builder-Action", "CDW-Builder-Action\CDW-Builder-Action.csproj", "{6B7D8AB5-2EB6-4B9E-A219-44BAA2016BED}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CDW_Builder_Action", "CDW-Builder-Action\CDW_Builder_Action.csproj", "{6B7D8AB5-2EB6-4B9E-A219-44BAA2016BED}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{5F6905A4-928D-4A81-9D9B-B273A27B3A92}"
 	ProjectSection(SolutionItems) = preProject
 		.dockerignore = .dockerignore
+		.editorconfig = .editorconfig
 		.gitignore = .gitignore
 		action.yml = action.yml
 		Dockerfile = Dockerfile
@@ -28,7 +29,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rnd.Logging", "external\Rn.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rnd.MongoDb", "external\Rn.Suite\src\lib\Rnd.MongoDb\Rnd.MongoDb.csproj", "{9AB589D5-9A2D-49DA-94B8-1715D122F87F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rnd.Mapping.Automapper", "external\Rn.Suite\src\lib\Rnd.Mapping.Automapper\Rnd.Mapping.Automapper.csproj", "{D31C7A1D-048F-4772-9B48-289213E98B9E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rnd.Mapping.Automapper", "external\Rn.Suite\src\lib\Rnd.Mapping.Automapper\Rnd.Mapping.Automapper.csproj", "{D31C7A1D-048F-4772-9B48-289213E98B9E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
