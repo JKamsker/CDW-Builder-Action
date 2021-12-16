@@ -129,12 +129,11 @@ namespace CDW_Builder_Action.Helpers
         private string CreateRandomPassword(int length)
         {
             StringBuilder builder = new StringBuilder();
-            Random random = new Random();
             char[] chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890".ToCharArray();
 
             for (int i = 0; i < length; i++)
             {
-                builder.Append(chars[random.Next(chars.Length)]);
+                builder.Append(chars[Random.Shared.Next(chars.Length)]);
             }
 
             return builder.ToString();
